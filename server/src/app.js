@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const helmet = require('helmet');
+const path = require('path');
 const app = express();
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // Disable CSP for easier deployment of frontend/backend together
+}));
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
@@ -16,12 +18,21 @@ app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 
-app.get('/', (req, res) => {
-  res.send('<h1>TeamTask API is Running</h1><p>The dashboard is part of the frontend application.</p>');
-});
-
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
+});
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+  } else {
+    res.status(404).json({ error: 'API route not found' });
+  }
 });
 
 // Basic error handler
