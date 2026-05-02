@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const fs = require('fs');
 const helmet = require('helmet');
 const app = express();
 
@@ -29,8 +30,12 @@ app.use(express.static(path.join(__dirname, '../../client/dist')));
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+  const indexPath = path.join(__dirname, '../../client/dist/index.html');
+  
+  if (!req.path.startsWith('/api') && fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else if (!req.path.startsWith('/api')) {
+    res.send('<h1>Dashboard is building...</h1><p>Please refresh in a minute. If this persists, the frontend build may have failed.</p>');
   } else {
     res.status(404).json({ error: 'API route not found' });
   }
