@@ -9,5 +9,5 @@ const path = require('path');
 // Change working directory to the server folder
 process.chdir(path.join(__dirname, 'server'));
 
-// Require the actual entry point
-require('./src/index.js');
+// Require the actual entry point (using full relative path for bundlers)
+require('./server/src/index.js');
