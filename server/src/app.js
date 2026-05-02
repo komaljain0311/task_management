@@ -16,6 +16,10 @@ app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 
+app.get('/', (req, res) => {
+  res.send('<h1>TeamTask API is Running</h1><p>The dashboard is part of the frontend application.</p>');
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
