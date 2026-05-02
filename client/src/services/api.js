@@ -1,0 +1,38 @@
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api', // Update this based on your backend URL
+});
+
+// Request interceptor to add the auth token to every request
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor to handle 401 Unauthorized globally
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear token and optionally redirect to login
+      localStorage.removeItem('token');
+      // Using window.location.href to force a full reload and state clear
+      // If you are already on /login, don't redirect
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/signup') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
