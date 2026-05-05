@@ -10,4 +10,4 @@ const path = require('path');
 process.chdir(path.join(__dirname, 'server'));
 
 // Require the actual entry point (using full relative path for bundlers)
-require('./server/src/index.js');
+require('./src/index.js');
