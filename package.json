@@ -4,12 +4,8 @@
   "description": "Task Management Application",
   "main": "main.py",
   "scripts": {
-    "start": "python main.py",
-    "dev": "python main.py",
-    "build": "cd client && npm run build",
-    "postinstall": "pip install -r requirements.txt && cd client && npm install",
-    "install-server": "pip install -r requirements.txt",
-    "install-client": "cd client && npm install"
+    "dev:python": "python main.py",
+    "dev:client": "cd client && npm run dev"
   },
   "keywords": ["task", "management", "python", "fastapi", "react"],
   "author": "",
