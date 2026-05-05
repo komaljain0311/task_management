@@ -24,6 +24,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
 
+app.get("/", (req, res) => {
+  res.send("Server is working 🚀");
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
