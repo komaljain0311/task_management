@@ -1,19 +1,18 @@
 const path = require('path');
 
-// Change working directory to 'server' to ensure Prisma works correctly
-const serverDir = path.join(__dirname, 'server');
-process.chdir(serverDir);
-
-// Load environment variables
-require('dotenv').config();
-
-// Import the app from the server directory
-const { app } = require('./server/src/app');
-
 /**
  * Entry point for Railway deployment.
- * Binds the Express app to the correct port provided by Railway.
+ * This script imports the app and binds it to the correct port.
  */
+
+// Import the app first (relative to this file)
+const { app } = require('./server/src/app');
+
+// Load environment variables before changing directory
+require('dotenv').config({ path: path.join(__dirname, 'server', '.env') });
+
+// Change working directory to 'server' to ensure Prisma works correctly
+process.chdir(path.join(__dirname, 'server'));
 
 const PORT = process.env.PORT || 3000;
 
