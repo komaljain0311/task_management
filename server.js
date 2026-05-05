@@ -1,24 +1,34 @@
-const express = require("express");
 const path = require('path');
-require('dotenv').config();
+const express = require('express');
 
-// Import app
+// Import the app first
 const { app } = require('./server/src/app');
 
-// Serve frontend build (IMPORTANT for full stack)
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+// Load environment variables
+require('dotenv').config({ path: path.join(__dirname, 'server', '.env') });
 
-// Basic route (to avoid 502)
-app.get("/", (req, res) => {
-  res.send("Server running ✅");
-});
+/**
+ * Entry point for Railway deployment.
+ * This script bootstraps the application and binds it to the correct port.
+ */
 
-app.get("/api", (req, res) => {
-  res.json({ message: "API working ✅" });
-});
+async function bootstrap() {
+  try {
+    // Change working directory to 'server' to ensure Prisma works correctly
+    process.chdir(path.join(__dirname, 'server'));
+    
+    // Serve frontend build
+    app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
-const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("Server started on port " + PORT);
-});
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log("Server started on port " + PORT);
+    });
+  } catch (error) {
+    console.error("Failed to bootstrap server:", error);
+    process.exit(1);
+  }
+}
+
+bootstrap();
