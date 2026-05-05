@@ -1,18 +1,21 @@
+const express = require("express");
 const path = require('path');
+require('dotenv').config();
 
-/**
- * Entry point for Railway deployment.
- * This script imports the app and binds it to the correct port.
- */
-
-// Import the app first (relative to this file)
+// Import app
 const { app } = require('./server/src/app');
 
-// Load environment variables before changing directory
-require('dotenv').config({ path: path.join(__dirname, 'server', '.env') });
+// Serve frontend build (IMPORTANT for full stack)
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
-// Change working directory to 'server' to ensure Prisma works correctly
-process.chdir(path.join(__dirname, 'server'));
+// Basic route (to avoid 502)
+app.get("/", (req, res) => {
+  res.send("Server running ✅");
+});
+
+app.get("/api", (req, res) => {
+  res.json({ message: "API working ✅" });
+});
 
 const PORT = process.env.PORT || 3000;
 

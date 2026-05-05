@@ -4,8 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npx prisma generate --schema=server/prisma/schema.prisma && npm run build --prefix client",
-    "postinstall": "npm install --prefix server && npm install --prefix client"
+    "build": "cd server && npx prisma generate && cd .. && npm run build --prefix client",
+    "postinstall": "npm install --prefix server && npm install --prefix client && cd server && npx prisma generate"
   },
   "dependencies": {
     "express": "^4.18.2",
