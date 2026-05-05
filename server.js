@@ -1,18 +1,18 @@
 const path = require('path');
-console.log('--- STARTING SERVER BRIDGE ---');
-console.log('Current __dirname:', __dirname);
-console.log('Initial process.env.PORT:', process.env.PORT);
+
+// Change working directory to 'server' to ensure Prisma and .env work correctly
+process.chdir(path.join(__dirname, 'server'));
+
+require('dotenv').config();
+const { app } = require('./src/app');
 
 /**
- * Bridge script for Railway deployment.
- * This script changes the working directory to 'server' so that 
- * Prisma, relative requires, and .env files work as expected.
+ * Entry point for Railway deployment.
+ * Binds the Express app to the correct port provided by Railway.
  */
 
-// Change working directory to the server folder
-console.log('Changing directory to /server...');
-process.chdir(path.join(__dirname, 'server'));
-console.log('New CWD:', process.cwd());
+const PORT = process.env.PORT || 3000;
 
-// Require the actual entry point using an absolute path
-require(path.join(__dirname, 'server', 'src', 'index.js'));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on port ${PORT}`);
+});
