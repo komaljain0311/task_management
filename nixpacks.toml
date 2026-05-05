@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["python311", "nodejs_20"]
+nixPkgs = ["python311", "nodejs-20_x"]
 
 [phases.install]
-cmds = ["pip install -r requirements.txt", "cd client && npm install"]
+cmds = ["python -m venv /app/.venv && /app/.venv/bin/pip install -r requirements.txt", "cd client && npm install"]
 
 [phases.build]
 cmds = ["cd client && npm run build"]
 
 [start]
-cmd = "python main.py"
+cmd = "/app/.venv/bin/python main.py"
