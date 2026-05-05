@@ -24,6 +24,10 @@ app.get("/health", (req, res) => {
   res.send("OK");
 });
 
+app.get("/", (req, res) => {
+  res.send("Working");
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
