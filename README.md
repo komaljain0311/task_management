@@ -6,8 +6,8 @@ TeamTask is a professional, full-stack task management system designed for colla
 
 The project is structured as a client-server application:
 - **Client**: A high-performance React application built with Vite.
-- **Server**: A scalable Node.js/Express API.
-- **Database**: SQLite managed via Prisma ORM for efficient local development.
+- **Server**: A scalable Python/FastAPI API.
+- **Database**: SQLite managed via SQLAlchemy ORM for efficient local development.
 
 ## 🛠️ Technology Stack
 
@@ -21,45 +21,86 @@ The project is structured as a client-server application:
 - **Axios**: HTTP client for API communication.
 
 ### Backend
-- **Node.js & Express**: API framework.
-- **Prisma**: Next-generation ORM for database management.
+- **Python & FastAPI**: Modern, fast API framework.
+- **SQLAlchemy**: Powerful ORM for database management.
 - **JWT**: Secure JSON Web Token authentication.
-- **Bcrypt**: Password hashing.
-- **Morgan & Helmet**: Security and logging middleware.
+- **PassLib**: Password hashing with bcrypt.
+- **Pydantic**: Data validation and serialization.
+- **Uvicorn**: ASGI server for high-performance deployment.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
+- Python (v3.8 or higher)
+- pip
+- Node.js (v18 or higher) for the React client
 - npm or yarn
 
 ### Installation
 1. Clone the repository.
-2. Install dependencies for both server and client:
+2. Install Python dependencies:
    ```bash
-   cd server && npm install
-   cd ../client && npm install
+   pip install -r requirements.txt
+   ```
+3. Install React client dependencies:
+   ```bash
+   cd client && npm install
    ```
 
 ### Database Setup
-Initialize the SQLite database and generate the Prisma client:
-```bash
-cd server
-npx prisma db push
-```
+The SQLite database is automatically created when you run the application. The SQLAlchemy models will create the necessary tables on startup.
 
 ### Running the Application
 Start the server and client in separate terminals:
+
 ```bash
 # Terminal 1 (Server)
-cd server
-npm run dev
+python main.py
 
 # Terminal 2 (Client)
-cd client
-npm run dev
+cd client && npm run dev
 ```
+
 The app will be available at `http://localhost:5173`.
+
+## 📦 Deployment
+
+### Python Backend
+The FastAPI application can be deployed to any platform that supports Python:
+
+- **Vercel**: Uses the `vercel.json` configuration
+- **Heroku**: Add a `Procfile` with `web: uvicorn main:app --host 0.0.0.0 --port $PORT`
+- **Docker**: Create a `Dockerfile` and `docker-compose.yml`
+
+### React Frontend
+The React client can be built and deployed as usual:
+
+```bash
+cd client
+npm run build
+```
+
+The built files in `client/dist/` will be served by the Python backend.
+
+## 🔧 Development
+
+### Backend API Documentation
+When running the server, visit `http://localhost:5000/docs` for interactive API documentation powered by Swagger UI.
+
+### Database
+- SQLite database file: `taskmanager.db`
+- Automatic table creation on startup
+- No migrations needed for basic usage
+
+## 🔄 Migration from Node.js
+
+This project has been converted from Node.js/Express/Prisma to Python/FastAPI/SQLAlchemy:
+
+- **Authentication**: JWT tokens with SHA256 password hashing
+- **Database**: SQLAlchemy ORM with SQLite
+- **API**: RESTful endpoints with automatic OpenAPI documentation
+- **CORS**: Configured for React development server
+- **Static Files**: Serves built React app in production
 
 ## ✨ Key Features
 

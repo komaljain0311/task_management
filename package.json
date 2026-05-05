@@ -1,17 +1,17 @@
 {
   "name": "task-manager",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "Task Management Application",
+  "main": "main.py",
   "scripts": {
-    "start": "node server.js",
-    "build": "cd server && npx prisma generate && cd .. && npm run build --prefix client",
-    "postinstall": "npm install --prefix server && npm install --prefix client && cd server && npx prisma generate"
+    "start": "python main.py",
+    "dev": "python main.py",
+    "build": "cd client && npm run build",
+    "postinstall": "pip install -r requirements.txt && cd client && npm install",
+    "install-server": "pip install -r requirements.txt",
+    "install-client": "cd client && npm install"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "dotenv": "^17.4.2"
-  },
-  "devDependencies": {
-    "prisma": "^6.19.3"
-  }
+  "keywords": ["task", "management", "python", "fastapi", "react"],
+  "author": "",
+  "license": "ISC"
 }

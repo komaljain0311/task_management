@@ -43,7 +43,7 @@ const Signup = () => {
       await signup(values.name, values.email, values.password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create an account.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Failed to create an account.');
     } finally {
       setIsLoading(false);
     }

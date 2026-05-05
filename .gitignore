@@ -28,3 +28,17 @@ Thumbs.db
 # Prisma
 /server/prisma/dev.db
 /server/prisma/dev.db-journal
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Database
+taskmanager.db
+taskmanager.db-journal
+
+# Scratch
+scratch/
