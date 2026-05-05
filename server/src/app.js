@@ -25,7 +25,11 @@ app.get("/health", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Working");
+  res.send("Server running ✅");
+});
+
+app.get("/api", (req, res) => {
+  res.json({ message: "API working ✅" });
 });
 
 // Serve static files from the React app
