@@ -39,18 +39,30 @@ app.include_router(notifications.router, prefix="/api/notifications", tags=["not
 async def health_check():
     return {"status": "OK"}
 
-@app.get("/")
-async def root():
-    return {"message": "Task Management API"}
-
-@app.get("/api")
-async def api_root():
-    return {"message": "API working ✅"}
-
 # Serve static files from React build (if exists)
 client_dist = Path(__file__).parent / "client" / "dist"
 if client_dist.exists():
-    app.mount("/", StaticFiles(directory=str(client_dist), html=True), name="static")
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        # 1. Check if it's an API call - let it fall through to routers
+        if full_path.startswith("api"):
+            raise HTTPException(status_code=404)
+        
+        # 2. Check if the file exists in the static directory (for assets, favicon, etc)
+        file_path = client_dist / full_path
+        if full_path and file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+            
+        # 3. Otherwise serve index.html (SPA routing)
+        index_file = client_dist / "index.html"
+        if index_file.exists():
+            return FileResponse(index_file)
+            
+        return {"message": "Frontend build found but index.html missing"}
+else:
+    @app.get("/")
+    async def root():
+        return {"message": "Task Management API (Frontend not built)"}
 
 if __name__ == "__main__":
     import uvicorn
