@@ -8,10 +8,16 @@ from pathlib import Path
 from app.database import engine, Base
 from app.routes import auth, projects, tasks, notifications
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI(title="Task Management API", version="1.0.0")
+
+@app.on_event("startup")
+async def startup_event():
+    print("Connecting to database...")
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Database tables created successfully ✅")
+    except Exception as e:
+        print(f"Error creating database tables: {e}")
 
 # CORS middleware
 app.add_middleware(
