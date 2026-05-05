@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npm install --prefix server && node ./server/node_modules/prisma/build/index.js generate --schema=server/prisma/schema.prisma && npm install --prefix client && npm run build --prefix client",
+    "build": "npx prisma generate --schema=server/prisma/schema.prisma && npm run build --prefix client",
     "postinstall": "npm install --prefix server && npm install --prefix client"
   },
   "devDependencies": {
